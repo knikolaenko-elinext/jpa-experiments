@@ -34,11 +34,11 @@ public class Exp05PredefinedId {
 		em.getTransaction().begin();
 
 		Message msg = new Message(10001L, "First");
-		msg = em.merge(msg); // if entity with this id does not exist - generate new id		
+		msg = em.merge(msg); // if entity with this id does not exist - generate new row with new id	
 		System.out.println(msg);
 		
 		msg = new Message(2L, "Second");
-		msg = em.merge(msg); // if entity with this id does exist - 
+		msg = em.merge(msg); // if entity with this id does exist - updates this row
 		System.out.println(msg);
 
 		em.getTransaction().commit();
