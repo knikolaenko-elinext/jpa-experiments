@@ -18,8 +18,8 @@ public class Exp04WithTransactionRollback {
 
 		em.getTransaction().begin();
 
-		em.persist(new Message(null, "First"));
-		em.persist(new Message(null, "Second"));
+		em.persist(new Message(null, "First", 0));
+		em.persist(new Message(null, "Second", 0));
 
 		List<Message> rs = em.createQuery("from Message where text=:text", Message.class).setParameter("text", "First").getResultList();
 		System.out.println(rs);

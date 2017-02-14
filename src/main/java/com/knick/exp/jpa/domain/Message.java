@@ -17,4 +17,5 @@ public class Message {
 	@GeneratedValue
 	private Long id;
 	private String text;
+	private int counter;
 }

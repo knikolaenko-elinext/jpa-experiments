@@ -16,7 +16,7 @@ public class Exp03WithTransaction {
 
 		em.getTransaction().begin();
 
-		Message msg = new Message(null, "First");
+		Message msg = new Message(null, "First", 0);
 		em.persist(msg);
 
 		System.out.println(msg);

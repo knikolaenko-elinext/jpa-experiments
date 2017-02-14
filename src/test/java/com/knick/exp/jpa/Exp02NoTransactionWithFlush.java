@@ -15,7 +15,7 @@ public class Exp02NoTransactionWithFlush {
 		EntityManagerFactory emf = Persistence.createEntityManagerFactory("CRM_PU");
 		EntityManager em = emf.createEntityManager();
 		try {
-			Message msg = new Message(null, "First");
+			Message msg = new Message(null, "First", 0);
 			em.persist(msg);
 
 			System.out.println(msg);

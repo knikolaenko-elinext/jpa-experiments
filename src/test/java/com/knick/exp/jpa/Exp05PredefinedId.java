@@ -17,7 +17,7 @@ public class Exp05PredefinedId {
 
 		em.getTransaction().begin(); 
 
-		Message msg = new Message(10001L, "First");
+		Message msg = new Message(10001L, "First", 0);
 		em.persist(msg); // It is not allowed to persist detached entity (with id set) - throw an exception
 
 		em.getTransaction().commit();
@@ -33,11 +33,11 @@ public class Exp05PredefinedId {
 
 		em.getTransaction().begin();
 
-		Message msg = new Message(10001L, "First");
+		Message msg = new Message(10001L, "First", 0);
 		msg = em.merge(msg); // if entity with this id does not exist - generate new row with new id	
 		System.out.println(msg);
 		
-		msg = new Message(2L, "Second");
+		msg = new Message(2L, "Second", 0);
 		msg = em.merge(msg); // if entity with this id does exist - updates this row
 		System.out.println(msg);
 
