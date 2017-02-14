@@ -15,17 +15,19 @@ public class Exp06ConcurrentTransaction {
 	public static class Updater implements Runnable {
 		private final EntityManagerFactory emf;
 		private final Long testableEntityId;
+		private final long sleepMillis;
 
-		public Updater(EntityManagerFactory emf, Long testableEntityId) {
+		public Updater(EntityManagerFactory emf, Long testableEntityId, long sleepMillis) {
 			super();
 			this.emf = emf;
 			this.testableEntityId = testableEntityId;
+			this.sleepMillis = sleepMillis;
 		}
 
 		@Override
 		public void run() {
 			EntityManager em = emf.createEntityManager();
-			for (int i = 0; i < 10; i++) {
+			for (int i = 0; i < 3; i++) {
 				readAndUpdate(em);
 			}
 			em.close();
@@ -35,10 +37,12 @@ public class Exp06ConcurrentTransaction {
 			em.getTransaction().begin();
 			Message msg = em.find(Message.class, testableEntityId);
 			int counter = msg.getCounter();
-			System.out.println(">> "+Thread.currentThread().getName()+": "+counter);
+			System.out.println(">> " + Thread.currentThread().getName() + ": " + counter);
 			msg.setCounter(counter + 1);
+			em.flush();
+			em.clear();
 			try {
-				Thread.sleep(1000);
+				Thread.sleep(sleepMillis);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
@@ -71,11 +75,11 @@ public class Exp06ConcurrentTransaction {
 		System.out.println(">> race start");
 		EntityManagerFactory emf = Persistence.createEntityManagerFactory("CRM_PU");
 
-		Thread t1 = new Thread(new Updater(emf, testableEntityId));
-		Thread t2 = new Thread(new Updater(emf, testableEntityId));
+		Thread t1 = new Thread(new Updater(emf, testableEntityId, 10000));
+		Thread t2 = new Thread(new Updater(emf, testableEntityId, 10000));
 
 		t1.start();
-		Thread.sleep(500);
+		Thread.sleep(5000);
 		t2.start();
 
 		t1.join();
