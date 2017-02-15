@@ -11,7 +11,7 @@ import com.knick.exp.jpa.domain.Message;
 public class Exp03WithTransaction {
 	@Test
 	public void persistAndThenCommitTransaction() {
-		EntityManagerFactory emf = Persistence.createEntityManagerFactory("CRM_PU");
+		EntityManagerFactory emf = Persistence.createEntityManagerFactory("H2_PU");
 		EntityManager em = emf.createEntityManager();
 
 		em.getTransaction().begin();

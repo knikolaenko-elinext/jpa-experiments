@@ -12,7 +12,7 @@ import com.knick.exp.jpa.domain.Message;
 public class Exp05PredefinedId {
 	@Test(expected=PersistenceException.class)
 	public void persistDetachedEntity() {
-		EntityManagerFactory emf = Persistence.createEntityManagerFactory("CRM_PU");
+		EntityManagerFactory emf = Persistence.createEntityManagerFactory("H2_PU");
 		EntityManager em = emf.createEntityManager();
 
 		em.getTransaction().begin(); 
@@ -28,7 +28,7 @@ public class Exp05PredefinedId {
 	
 	@Test
 	public void mergeDetachedEntity() {
-		EntityManagerFactory emf = Persistence.createEntityManagerFactory("CRM_PU");
+		EntityManagerFactory emf = Persistence.createEntityManagerFactory("H2_PU");
 		EntityManager em = emf.createEntityManager();
 
 		em.getTransaction().begin();

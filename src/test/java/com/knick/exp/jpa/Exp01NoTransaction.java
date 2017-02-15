@@ -13,7 +13,7 @@ public class Exp01NoTransaction {
 
 	@Test
 	public void persistWithoutTransaction() {
-		EntityManagerFactory emf = Persistence.createEntityManagerFactory("CRM_PU");
+		EntityManagerFactory emf = Persistence.createEntityManagerFactory("H2_PU");
 		EntityManager em = emf.createEntityManager();
 
 		Message msg = new Message(null, "First", 0);

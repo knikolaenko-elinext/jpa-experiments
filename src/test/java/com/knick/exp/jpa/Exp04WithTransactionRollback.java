@@ -13,7 +13,7 @@ import com.knick.exp.jpa.domain.Message;
 public class Exp04WithTransactionRollback {
 	@Test
 	public void persistAndThenRollbackTransaction() {
-		EntityManagerFactory emf = Persistence.createEntityManagerFactory("CRM_PU");
+		EntityManagerFactory emf = Persistence.createEntityManagerFactory("H2_PU");
 		EntityManager em = emf.createEntityManager();
 
 		em.getTransaction().begin();

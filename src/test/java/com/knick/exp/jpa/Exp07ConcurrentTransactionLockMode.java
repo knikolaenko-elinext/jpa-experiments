@@ -2,6 +2,7 @@ package com.knick.exp.jpa;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.LockModeType;
 import javax.persistence.Persistence;
 
 import org.junit.After;
@@ -10,7 +11,7 @@ import org.junit.Test;
 
 import com.knick.exp.jpa.domain.Message;
 
-public class Exp06ConcurrentTransaction {
+public class Exp07ConcurrentTransactionLockMode {
 
 	public static class Updater implements Runnable {
 		private final EntityManagerFactory emf;
@@ -35,7 +36,7 @@ public class Exp06ConcurrentTransaction {
 
 		private void readAndUpdate(EntityManager em) {
 			em.getTransaction().begin();
-			Message msg = em.find(Message.class, testableEntityId);
+			Message msg = em.find(Message.class, testableEntityId, LockModeType.PESSIMISTIC_WRITE);
 			int counter = msg.getCounter();
 			System.out.println(">> " + Thread.currentThread().getName() + ": " + counter);
 			msg.setCounter(counter + 1);
@@ -55,7 +56,7 @@ public class Exp06ConcurrentTransaction {
 	@Before
 	public void before() {
 		System.out.println(">> before start");
-		EntityManagerFactory emf = Persistence.createEntityManagerFactory("CRM_PU");
+		EntityManagerFactory emf = Persistence.createEntityManagerFactory("MYSQL_PU");
 		EntityManager em = emf.createEntityManager();
 		em.getTransaction().begin();
 
@@ -73,13 +74,13 @@ public class Exp06ConcurrentTransaction {
 	@Test
 	public void raceIt() throws InterruptedException {
 		System.out.println(">> race start");
-		EntityManagerFactory emf = Persistence.createEntityManagerFactory("CRM_PU");
+		EntityManagerFactory emf = Persistence.createEntityManagerFactory("MYSQL_PU");
 
-		Thread t1 = new Thread(new Updater(emf, testableEntityId, 10000));
-		Thread t2 = new Thread(new Updater(emf, testableEntityId, 10000));
+		Thread t1 = new Thread(new Updater(emf, testableEntityId, 1000));
+		Thread t2 = new Thread(new Updater(emf, testableEntityId, 1000));
 
 		t1.start();
-		Thread.sleep(5000);
+		Thread.sleep(500);
 		t2.start();
 
 		t1.join();
@@ -92,7 +93,7 @@ public class Exp06ConcurrentTransaction {
 	@After
 	public void after() {
 		System.out.println(">> after start");
-		EntityManagerFactory emf = Persistence.createEntityManagerFactory("CRM_PU");
+		EntityManagerFactory emf = Persistence.createEntityManagerFactory("MYSQL_PU");
 		EntityManager em = emf.createEntityManager();
 		em.getTransaction().begin();
 

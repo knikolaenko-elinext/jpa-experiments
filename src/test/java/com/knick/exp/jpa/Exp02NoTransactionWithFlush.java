@@ -12,7 +12,7 @@ import com.knick.exp.jpa.domain.Message;
 public class Exp02NoTransactionWithFlush {
 	@Test(expected = TransactionRequiredException.class)
 	public void forceFlushOutsideTransaction() {
-		EntityManagerFactory emf = Persistence.createEntityManagerFactory("CRM_PU");
+		EntityManagerFactory emf = Persistence.createEntityManagerFactory("H2_PU");
 		EntityManager em = emf.createEntityManager();
 		try {
 			Message msg = new Message(null, "First", 0);
