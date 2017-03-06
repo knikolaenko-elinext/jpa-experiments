@@ -1,9 +1,12 @@
 package com.knick.exp.jpa.domain;
 
+import javax.persistence.ConstraintMode;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.ForeignKey;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 
 import lombok.AllArgsConstructor;
@@ -18,25 +21,18 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Message {
+public class MessageDeliveryReport {
 	@Id
 	@GeneratedValue
 	private Long id;
-	private String text;
-	private int counter;
+	private String status;
 
-	@OneToOne(mappedBy = "message", fetch = FetchType.LAZY)
-	private MessageDeliveryReport deliveryReport;
-
-	public Message(Long id, String text, int counter) {
-		super();
-		this.id = id;
-		this.text = text;
-		this.counter = counter;
-	}
+	@OneToOne(fetch = FetchType.LAZY)
+	@JoinColumn(referencedColumnName = "id", insertable = false, updatable = false, foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
+	private Message message;
 
 	@Override
 	public String toString() {
-		return "Message [id=" + id + ", text=" + text + ", counter=" + counter + ", deliveryReport=" + deliveryReport + "]";
+		return "MessageDeliveryReport [id=" + id + ", status=" + status + "]";
 	}
 }
