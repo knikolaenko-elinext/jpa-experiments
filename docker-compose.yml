@@ -1,0 +1,11 @@
+version: '3'
+services:
+  mysql-server:
+    image: mysql
+    ports:
+      - "3306:3306"
+    volumes:
+      - "./local-data/mysql:/var/lib/mysql"
+    environment:
+      MYSQL_ROOT_PASSWORD: admin
+      MYSQL_DATABASE: jpa-experiments-db
