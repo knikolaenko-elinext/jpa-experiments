@@ -40,4 +40,24 @@
 			<property name="hibernate.hbm2ddl.auto" value="update" /> <!-- validate, update, create, create-drop -->
 		</properties>
 	</persistence-unit>
+
+
+	<persistence-unit name="MYSQL_BATCHSIZE_EXP" transaction-type="RESOURCE_LOCAL">
+		<provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
+		<class>com.knick.exp.jpa.domain.batchsize.Diagnosis</class>
+		<class>com.knick.exp.jpa.domain.batchsize.Patient</class>
+		<exclude-unlisted-classes>true</exclude-unlisted-classes>
+		<properties>
+			<property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver" />
+			<property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:13306/jpa-experiments-db"/>
+			<property name="javax.persistence.jdbc.user" value="root" />
+			<property name="javax.persistence.jdbc.password" value="admin" />
+
+			<property name="hibernate.connection.isolation" value="2" /> <!-- 0: none; 1: read uncommited; 2: read commited; 4: repeatable read; 8: serializible-->
+			<property name="hibernate.show_sql" value="true" />
+			<property name="hibernate.hbm2ddl.auto" value="update" /> <!-- validate, update, create, create-drop -->
+		</properties>
+	</persistence-unit>
+
+
 </persistence>
