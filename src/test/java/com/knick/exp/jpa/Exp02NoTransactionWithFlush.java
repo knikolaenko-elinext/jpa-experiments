@@ -8,8 +8,12 @@ import javax.persistence.TransactionRequiredException;
 import org.junit.Test;
 
 import com.knick.exp.jpa.domain.Message;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class Exp02NoTransactionWithFlush {
+	private static final Logger LOG = LoggerFactory.getLogger(Exp02NoTransactionWithFlush.class);
+
 	@Test(expected = TransactionRequiredException.class)
 	public void forceFlushOutsideTransaction() {
 		EntityManagerFactory emf = Persistence.createEntityManagerFactory("H2_PU");
@@ -21,6 +25,9 @@ public class Exp02NoTransactionWithFlush {
 			System.out.println(msg);
 
 			em.flush(); // Exception - We can not save data without transaction
+		} catch (Exception e) {
+			LOG.error("Exception occurred", e);
+			throw e;
 		} finally {
 			em.close();
 			emf.close();

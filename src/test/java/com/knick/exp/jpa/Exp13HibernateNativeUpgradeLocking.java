@@ -20,7 +20,7 @@ public class Exp13HibernateNativeUpgradeLocking {
     private static final Logger LOG = LoggerFactory.getLogger(Exp13HibernateNativeUpgradeLocking.class);
 
     private static final int SLEEP_MILLIS = 2000;
-    private static final int THREADS_NUM = 10;
+    private static final int THREADS_NUM = 1;
 
     private SessionFactory sf;
     private Long messageId;
@@ -37,6 +37,7 @@ public class Exp13HibernateNativeUpgradeLocking {
         session.save(msg);
         session.getTransaction().commit();
         messageId = msg.getId();
+        LOG.info("Message ID: {}", messageId);
     }
 
     @Test
@@ -81,8 +82,10 @@ public class Exp13HibernateNativeUpgradeLocking {
             session.beginTransaction();
             message.setCounter(message.getCounter() + 1);
             session.save(message);
+            LOG.info("Saved {}", message);
+            sleep();
             session.getTransaction().commit();
-            LOG.info("Updated {}", message);
+            LOG.info("Committed {}", message);
 
             sleep();
 
