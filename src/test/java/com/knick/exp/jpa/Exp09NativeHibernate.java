@@ -42,6 +42,28 @@ public class Exp09NativeHibernate {
     }
 
     @Test
+    public void updateWithTransactionWithoutExplicitSave() {
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("MYSQL_PU");
+        SessionFactory sf = emf.unwrap(SessionFactory.class);
+        Session session = sf.withOptions().interceptor(new TestInterceptor()).openSession();
+
+        session.beginTransaction();
+        Message msg = Message.builder().text("message").build();
+        session.save(msg);
+        session.getTransaction().commit();
+
+        Long id = msg.getId();
+        session.beginTransaction();
+        msg = session.get(Message.class, id);
+        msg.setText("updated message");
+        session.getTransaction().commit(); // No need to call session.save
+
+        session.clear();
+        Assert.assertEquals("updated message", session.get(Message.class, id).getText());
+    }
+
+
+    @Test
     public void playWithMultipleTransactions() {
         EntityManagerFactory emf = Persistence.createEntityManagerFactory("MYSQL_PU");
         SessionFactory sf = emf.unwrap(SessionFactory.class);
